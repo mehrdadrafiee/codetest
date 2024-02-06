@@ -1,4 +1,5 @@
 import { TodoProps } from "@/app/page";
+import { toggleTodo } from "@/lib/actions/todo.actions";
 import { useState } from "react"
 
 export default function Todo({ todo }: { todo: TodoProps }) {
@@ -15,10 +16,18 @@ export default function Todo({ todo }: { todo: TodoProps }) {
     setIsEditMode(false)
   }
 
+  const handleToggle = async (todo: TodoProps) => {
+    try {
+      await toggleTodo({ ...todo, isComplete: !todo.isComplete })
+    } catch (error) {
+      console.error("Failed to (un)mark todo:", error);
+    }
+  };
+
   return (
     <li className="flex justify-between p-3 border-b-2 border-gray-500">
       <div className="flex items-center">
-        <input id={todo.id} type="checkbox" className="mr-2" checked={todo.isComplete} />
+        <input id={todo.id} onChange={(e) => handleToggle(todo)} type="checkbox" className="mr-2" checked={todo.isComplete} />
         {isEditMode ?
           <input type="text" className="p-3 w-60" autoFocus value={newName} onChange={(e) => setNewName(e.target.value)} />
           :

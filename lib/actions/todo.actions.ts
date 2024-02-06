@@ -24,3 +24,17 @@ export async function createTodo({ id, name, isComplete = false }: TodoProps) {
     throw new Error(`Error creating the todo: ${error.message}`);
   }
 }
+
+export async function toggleTodo({ id, name, isComplete }: TodoProps): Promise<void> {
+  try {
+    await connectToDB()
+
+    await Todo.findOneAndUpdate(
+      { id: id },
+      { name, isComplete },
+      { upsert: true }
+    );
+  } catch (error: any) {
+    throw new Error(`Failed to update todo: ${error.message}`);
+  }
+}
