@@ -1,8 +1,8 @@
 import { TodoProps } from "@/app/page";
-import { deleteTodo, toggleTodo, updateTodo } from "@/lib/actions/todo.actions";
+import { deleteTodo, fetchTodos, toggleTodo, updateTodo } from "@/lib/actions/todo.actions";
 import { useState } from "react"
 
-export default function Todo({ todo }: { todo: TodoProps }) {
+export default function Todo({ todo, setTodos }: { todo: TodoProps, setTodos: any }) {
   const [isEditMode, setIsEditMode] = useState(false)
   const [newName, setNewName] = useState(todo.name);
 
@@ -19,6 +19,7 @@ export default function Todo({ todo }: { todo: TodoProps }) {
   const handleToggle = async (todo: TodoProps) => {
     try {
       await toggleTodo({ ...todo, isComplete: !todo.isComplete })
+      await fetchTodos().then((data) => setTodos(data));
     } catch (error) {
       console.error("Failed to (un)mark todo:", error);
     }
@@ -27,6 +28,7 @@ export default function Todo({ todo }: { todo: TodoProps }) {
   const handleDelete = async (id: string) => {
     try {
       await deleteTodo(id)
+      await fetchTodos().then((data) => setTodos(data));
     } catch (error) {
       console.error("Failed to delete todo:", error);
     }
@@ -36,6 +38,7 @@ export default function Todo({ todo }: { todo: TodoProps }) {
     e.preventDefault()
     try {
       await updateTodo(id, newName)
+      await fetchTodos().then((data) => setTodos(data));
       setIsEditMode(false)
     } catch (error) {
       console.error("Failed to update the todo:", error);

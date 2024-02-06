@@ -19,6 +19,7 @@ export default function Home() {
     e.preventDefault();
     try {
       await createTodo({ id: uuidv4(), name: inputValue, isComplete: false })
+      await fetchTodos().then((data) => setTodos(data));
       setInputValue("");
     } catch (error) {
       console.error("Failed to create a todo:", error);
@@ -29,7 +30,7 @@ export default function Home() {
     fetchTodos()
       .then((data) => setTodos(data))
       .catch((error) => console.error("Error fetching todos:", error));
-  }, [todos]);
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center lg:p-20 md:p-10 sm:p-5">
@@ -38,7 +39,7 @@ export default function Home() {
         {todos && todos.length > 0 ?
           <ul>
             {todos.map((todo) =>
-              <Todo todo={todo} key={todo.id} />
+              <Todo todo={todo} setTodos={setTodos} key={todo.id} />
             )}
           </ul>
           :
