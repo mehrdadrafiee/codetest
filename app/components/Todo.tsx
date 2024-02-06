@@ -1,5 +1,5 @@
 import { TodoProps } from "@/app/page";
-import { deleteTodo, toggleTodo } from "@/lib/actions/todo.actions";
+import { deleteTodo, toggleTodo, updateTodo } from "@/lib/actions/todo.actions";
 import { useState } from "react"
 
 export default function Todo({ todo }: { todo: TodoProps }) {
@@ -32,6 +32,16 @@ export default function Todo({ todo }: { todo: TodoProps }) {
     }
   };
 
+  const handleSaveButton = async (e: any, id: string, newName: string) => {
+    e.preventDefault()
+    try {
+      await updateTodo(id, newName)
+      setIsEditMode(false)
+    } catch (error) {
+      console.error("Failed to update the todo:", error);
+    }
+  }
+
   return (
     <li className="flex justify-between p-3 border-b-2 border-gray-500">
       <div className="flex items-center">
@@ -46,7 +56,7 @@ export default function Todo({ todo }: { todo: TodoProps }) {
         {isEditMode ?
           <>
             <button onClick={handleCancelButton} className="mr-2 border-2 border-gray-300 p-3 hover:text-white hover:bg-gray-500 hover:border-gray-500">Cancel</button>
-            <button disabled={newName.length === 0} className="text-green-600 border-2 border-gray-300 p-3 hover:text-white hover:bg-green-600 hover:border-green-600 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 disabled:border-gray-300">Save</button>
+            <button disabled={newName.length === 0} onClick={(e) => handleSaveButton(e, todo.id, newName)} className="text-green-600 border-2 border-gray-300 p-3 hover:text-white hover:bg-green-600 hover:border-green-600 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 disabled:border-gray-300">Save</button>
           </>
           :
           <>
