@@ -1,17 +1,18 @@
 "use client"
 
 import Todo from "./components/Todo";
+import { v4 as uuidv4 } from 'uuid';
 
 const data = [{
-  id: "1",
+  id: uuidv4(),
   name: "laundry",
   isComplete: false
 }, {
-  id: "2",
+  id: uuidv4(),
   name: "car wash",
   isComplete: false
 }, {
-  id: "3",
+  id: uuidv4(),
   name: "shopping",
   isComplete: false
 }]
