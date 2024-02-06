@@ -30,6 +30,16 @@ export default function Home() {
     fetchTodos()
       .then((data) => setTodos(data))
       .catch((error) => console.error("Error fetching todos:", error));
+
+    // for some reason this is not working!
+    // const fetchData = async () => {
+    //   const response = await fetch("api/todos")
+    //   const data = await response.json()
+    //   console.log(data)
+    //   return data
+    // }
+
+    // fetchData().then((data) => setTodos(data)).catch((error) => console.error("Error fetching todos:", error));
   }, []);
 
   return (
