@@ -38,3 +38,12 @@ export async function toggleTodo({ id, name, isComplete }: TodoProps): Promise<v
     throw new Error(`Failed to update todo: ${error.message}`);
   }
 }
+
+export async function deleteTodo(id: string): Promise<void> {
+  try {
+    await connectToDB()
+    await Todo.findOneAndDelete({ id })
+  } catch (error: any) {
+    throw new Error(`Failed to delete todo: ${error.message}`);
+  }
+}

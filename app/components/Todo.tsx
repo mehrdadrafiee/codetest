@@ -1,5 +1,5 @@
 import { TodoProps } from "@/app/page";
-import { toggleTodo } from "@/lib/actions/todo.actions";
+import { deleteTodo, toggleTodo } from "@/lib/actions/todo.actions";
 import { useState } from "react"
 
 export default function Todo({ todo }: { todo: TodoProps }) {
@@ -24,6 +24,14 @@ export default function Todo({ todo }: { todo: TodoProps }) {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteTodo(id)
+    } catch (error) {
+      console.error("Failed to delete todo:", error);
+    }
+  };
+
   return (
     <li className="flex justify-between p-3 border-b-2 border-gray-500">
       <div className="flex items-center">
@@ -45,7 +53,7 @@ export default function Todo({ todo }: { todo: TodoProps }) {
             {!todo.isComplete &&
               <button onClick={handleEditButton} className="mr-2 border-2 border-gray-300 p-3 hover:text-white hover:bg-gray-500 hover:border-gray-500">Edit</button>
             }
-            <button className="text-red-500 border-2 border-gray-300 p-3 hover:text-white hover:bg-red-500 hover:border-red-500">Delete</button>
+            <button onClick={(e) => handleDelete(todo.id)} className="text-red-500 border-2 border-gray-300 p-3 hover:text-white hover:bg-red-500 hover:border-red-500">Delete</button>
           </>
         }
       </div>
